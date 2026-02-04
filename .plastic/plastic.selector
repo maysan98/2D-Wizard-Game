@@ -1,0 +1,4 @@
+repository "GlobalGameJam2D/GlobalGameJam2D@18968350261005@cloud"
+  path "/"
+    br "/main"
+    co "/main"
