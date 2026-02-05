@@ -3741,7 +3741,7 @@ Transform:
   m_GameObject: {fileID: 454886451}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -5.7057843, y: -1.8875457, z: -10}
+  m_LocalPosition: {x: -5.708688, y: -1.8875457, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -4288,6 +4288,10 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 4105362945620786468, guid: ebea5f8b8163f9a4ab9d9a1b45444e28, type: 3}
+      propertyPath: m_AnimatePhysics
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4105362945620786468, guid: ebea5f8b8163f9a4ab9d9a1b45444e28, type: 3}
       propertyPath: m_ApplyRootMotion
       value: 0
       objectReference: {fileID: 0}
@@ -4388,10 +4392,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d35fad1fa172dfb4b9fe0092bd43ce9b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerMovement
-  jumpHeight: 7
+  jumpHeight: 9
   maskSpeed: 2
   activeChar: {fileID: 4105362946611754417}
-  Speed: 5
+  Speed: 6
   Skeletal: {fileID: 7478621443813198448}
 --- !u!70 &1159661719
 CapsuleCollider2D:
@@ -4649,7 +4653,7 @@ Transform:
   m_GameObject: {fileID: 1881783363}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -5.7057843, y: -1.8875457, z: -10}
+  m_LocalPosition: {x: -5.708688, y: -1.8875457, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

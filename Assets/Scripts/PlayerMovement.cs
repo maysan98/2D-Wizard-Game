@@ -1,6 +1,9 @@
 
 using UnityEngine;
 using System.Collections;
+using NUnit.Framework;
+using UnityEngine.InputSystem.XR.Haptics;
+using Unity.VisualScripting;
 public class PlayerMovement : MonoBehaviour
 {
     [SerializeField] float jumpHeight = 5f;
@@ -10,6 +13,12 @@ public class PlayerMovement : MonoBehaviour
 
     [SerializeField] float Speed= 3f;
     private bool maskOn = false;
+    private bool JumpPressed = false;
+    private bool isGrounded;
+    private float xAxis;
+    private float BufferTime = 0.1f;
+    private float BufferCounter;
+    private string currentState;
     Animator anim;
 
     private Rigidbody2D rb;
@@ -21,86 +30,78 @@ public class PlayerMovement : MonoBehaviour
     {
         rb = GetComponent<Rigidbody2D>();
         anim = activeChar.GetComponent<Animator>(); 
-        
+        currentState = "Idle";
+        anim.Play("Idle");
     }
+     
+
+    
+    void ChangeAnimationState(string newState)
+    {
+        if(newState == currentState) return;
+        anim.Play(newState);
+        currentState = newState;
+    }
+        
+
+    
 
     void Update()
     {
-        bool isGrounded = rb.linearVelocityY == 0;
-        float x = Input.GetAxis("Horizontal");              // حركة أفقي
-        rb.linearVelocity = new Vector2( x * Speed , rb.linearVelocityY);
         
-        if ( Mathf.Abs(rb.linearVelocityX) > 0.01 ) //  اذا على الارض ويتحرك افقيا شغل انيميشن الركض 
-            { 
-                anim.SetBool("isRun", true); 
-            } 
-            else
-            {
-                anim.SetBool("isRun", false);
-            }    
+        xAxis = Input.GetAxisRaw("Horizontal");              // حركة أفقي
+        isGrounded = Mathf.Abs(rb.linearVelocityY) < 0.01f;
 
-
-        if (rb.linearVelocityX < 0)
+        
+        if (Input.GetButtonDown("Jump") )
         {
-            Skeletal.localScale = new Vector3(-1,1,1);
-        } else if(rb.linearVelocityX > 0)
-         {
-            Skeletal.localScale = new Vector3(1,1,1);
+            BufferCounter = BufferTime;//كل طلب قفز بينحفظ ل0.1 ثانيه اذا كان اللاعب عالارض خلال هذي الفتره بيقفز اذا لا رح يوصل الكاونتر لصفر وينمسح الطلب 
         }
-
+        else BufferCounter -= Time.deltaTime;
         
-        if (Input.GetButtonDown("Jump") && isGrounded)      // قفز
-        {
-            rb.linearVelocityY =  jumpHeight; 
-            anim.SetTrigger( "isJump"); 
-        }   
     }     
-          
 
-}
 
-// إيجاد كل الصناديق
-        //boxes = GameObject.FindObjectsByType<BombScript>(FindObjectsSortMode.None);
+    void FixedUpdate()
+    {   
+        if (BufferCounter > 0 && isGrounded)      // قفز
+                {
+                    rb.linearVelocityY =  jumpHeight; 
+                    BufferCounter = 0; // لأن خلاص قفز لهذا الطلب 
+                    ChangeAnimationState("Jump");
+                    return;
+                }  
 
-// الماسك
-        /* if (Input.GetKeyDown(KeyCode.M) && !maskOn)
-        {
-            StartCoroutine(UseMask());
-        }
 
-        // التفاعل مع الصناديق
-        if (boxes != null)
-        {
-            foreach (BombScript box in boxes)
+        rb.linearVelocity = new Vector2( xAxis * Speed , rb.linearVelocityY);
+
+         
+
+        
+        
+        if (!isGrounded && rb.linearVelocityY < 0)
             {
-                if (box != null)
-                    box.CheckMask(maskOn);
+                ChangeAnimationState("Fall");
             }
-        }*/
-    /*IEnumerator UseMask()
-    {
-        maskOn = true;
-        currentSpeed = maskSpeed;
-        
-        Debug.Log("MASK ON");
 
-        yield return new WaitForSeconds(3f);
+        //Flip the charecter based on right and left movement
+        if (rb.linearVelocityX < 0) 
+            {
+                Skeletal.localScale = new Vector3(-1,1,1);
+            }
+            else if (rb.linearVelocityX > 0)
+            {
+                Skeletal.localScale = new Vector3(1,1,1);
+            }
 
-        maskOn = false;
-        currentSpeed = normalSpeed;
-        
-        Debug.Log("MASK OFF");
-    }*/
 
-    /*void OnCollisionEnter2D(Collision2D collision)
-    {
-        BombScript box = collision.gameObject.GetComponent<BombScript>();
-        if (box != null && box.hasBomb && !maskOn)
-        {
-            Debug.Log("Boom! Restart Level");
-            UnityEngine.SceneManagement.SceneManager.LoadScene(
-                UnityEngine.SceneManagement.SceneManager.GetActiveScene().name
-            );
-        }
-    }*/
+        if (!isGrounded) // هنا اذا كان بالهواء اطلع من الفكسدابديت ولا تكمل الكود
+        return;
 
+        if (Mathf.Abs(rb.linearVelocityX) > 0.01f)
+        ChangeAnimationState("Run");
+        else
+        ChangeAnimationState("Idle");
+            
+    } 
+}
