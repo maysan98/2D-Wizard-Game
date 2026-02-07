@@ -1,107 +1,71 @@
-
 using UnityEngine;
 using System.Collections;
 using NUnit.Framework;
 using UnityEngine.InputSystem.XR.Haptics;
 using Unity.VisualScripting;
+using System.Runtime.CompilerServices;
+
 public class PlayerMovement : MonoBehaviour
 {
     [SerializeField] float jumpHeight = 5f;
-    
-    [SerializeField] float maskSpeed = 2f;
     [SerializeField] GameObject activeChar;
-
-    [SerializeField] float Speed= 3f;
-    private bool maskOn = false;
-    private bool JumpPressed = false;
-    private bool isGrounded;
-    private float xAxis;
-    private float BufferTime = 0.1f;
-    private float BufferCounter;
-    private string currentState;
-    Animator anim;
-
-    private Rigidbody2D rb;
-
-    BombScript[] boxes;
+    [SerializeField] float speed = 3f;
+    public bool isGrounded;
+    private bool isJumpPressed;
+    [HideInInspector] public float xAxis;
+    private float bufferTime = 0.1f;
+    private float bufferCounter;
+   
+    public Rigidbody2D rb;
     public Transform Skeletal;
+    
+    PlayerState state;
+    
 
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
-        anim = activeChar.GetComponent<Animator>(); 
-        currentState = "Idle";
-        anim.Play("Idle");
+        state = GetComponent<PlayerState>();
     }
-     
-
-    
-    void ChangeAnimationState(string newState)
-    {
-        if(newState == currentState) return;
-        anim.Play(newState);
-        currentState = newState;
-    }
-        
-
     
 
     void Update()
     {
+        if (state.isFrozen) return; // Early exit so it doesn't accept inputs if it is frozen
         
-        xAxis = Input.GetAxisRaw("Horizontal");              // حركة أفقي
+        xAxis = Input.GetAxisRaw("Horizontal");              // Inputs
         isGrounded = Mathf.Abs(rb.linearVelocityY) < 0.01f;
+        isJumpPressed = Input.GetButtonDown("Jump");
 
-        
-        if (Input.GetButtonDown("Jump") )
+
+        if (isJumpPressed )
         {
-            BufferCounter = BufferTime;//كل طلب قفز بينحفظ ل0.1 ثانيه اذا كان اللاعب عالارض خلال هذي الفتره بيقفز اذا لا رح يوصل الكاونتر لصفر وينمسح الطلب 
+            bufferCounter = bufferTime;  //كل طلب قفز بينحفظ ل0.1 ثانيه اذا كان اللاعب عالارض خلال هذي الفتره بيقفز اذا لا رح يوصل الكاونتر لصفر وينمسح الطلب 
         }
-        else BufferCounter -= Time.deltaTime;
+        else bufferCounter -= Time.deltaTime;
         
     }     
 
 
     void FixedUpdate()
     {   
-        if (BufferCounter > 0 && isGrounded)      // قفز
-                {
-                    rb.linearVelocityY =  jumpHeight; 
-                    BufferCounter = 0; // لأن خلاص قفز لهذا الطلب 
-                    ChangeAnimationState("Jump");
-                    return;
-                }  
+        if (state.isFrozen)
+        {
+            rb.linearVelocity = Vector2.zero;
+            return;
+        }
+
+        if (bufferCounter > 0 && isGrounded)      // قفز
+        {    
+              rb.linearVelocityY =  jumpHeight; 
+              bufferCounter = 0; // لأن خلاص قفز لهذا الطلب 
+                return;      
+        }                    
 
 
-        rb.linearVelocity = new Vector2( xAxis * Speed , rb.linearVelocityY);
+        rb.linearVelocity = new Vector2(xAxis * speed , rb.linearVelocityY);
 
-         
-
-        
-        
-        if (!isGrounded && rb.linearVelocityY < 0)
-            {
-                ChangeAnimationState("Fall");
-            }
-
-        //Flip the charecter based on right and left movement
-        if (rb.linearVelocityX < 0) 
-            {
-                Skeletal.localScale = new Vector3(-1,1,1);
-            }
-            else if (rb.linearVelocityX > 0)
-            {
-                Skeletal.localScale = new Vector3(1,1,1);
-            }
-
-
-        if (!isGrounded) // هنا اذا كان بالهواء اطلع من الفكسدابديت ولا تكمل الكود
-        return;
-
-        if (Mathf.Abs(rb.linearVelocityX) > 0.01f)
-        ChangeAnimationState("Run");
-        else
-        ChangeAnimationState("Idle");
-            
     } 
+    
 }
+    
