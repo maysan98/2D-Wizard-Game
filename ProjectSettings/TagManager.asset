@@ -5,7 +5,6 @@ TagManager:
   serializedVersion: 3
   tags:
   - platform
-  - Bomb
   layers:
   - Default
   - TransparentFX
@@ -14,9 +13,15 @@ TagManager:
   - Water
   - UI
   - background
+<<<<<<< Updated upstream
+  - 
+  - 
+  - 
+=======
   - Bomb
-  - 
-  - 
+  - groundCheck
+  - ground
+>>>>>>> Stashed changes
   - 
   - 
   - 
