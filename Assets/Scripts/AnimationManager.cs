@@ -30,7 +30,7 @@ public class AnimationManager : MonoBehaviour
         if (!move.isGrounded){
             if (move.rb.linearVelocityY > 0.01f )
             ChangeAnimationState("Jump");
-            else ChangeAnimationState("Fall");
+            else ChangeAnimationState("Idle");
         }
         else if (Mathf.Abs(move.rb.linearVelocityX) > 0.01f)
         ChangeAnimationState("Run");
