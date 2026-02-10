@@ -8,9 +8,9 @@ public class LevelTime : MonoBehaviour
 
     [SerializeField] GameObject textObject;
     private TextMeshProUGUI timeText;
-    [SerializeField] int levelDuration = 30;
+    public int levelDuration = 30;
     private bool countingSeconds = false;
-
+    [HideInInspector] public bool timeUp = false;
 
 
     void Start()
@@ -27,6 +27,7 @@ public class LevelTime : MonoBehaviour
         StartCoroutine(Timer());
         } else if (levelDuration == 0)
         {
+            timeUp = true;
             timeText.text = " Time UP! ";
             // Respawn()
         }

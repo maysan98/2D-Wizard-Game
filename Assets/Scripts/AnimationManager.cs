@@ -10,6 +10,7 @@ public class AnimationManager : MonoBehaviour
     private string currentState;
     PlayerMovement move;
     PlayerState state;
+    [SerializeField] LevelTime timeState;
     void Start()
     {
         move = GetComponent<PlayerMovement>();
@@ -25,6 +26,13 @@ public class AnimationManager : MonoBehaviour
             ChangeAnimationState("Hurt");
             return;
         }
+
+        if (timeState.timeUp)
+        {
+            ChangeAnimationState("Die");
+            return;
+        }
+
         Flip();
 
         if (!move.isGrounded){
