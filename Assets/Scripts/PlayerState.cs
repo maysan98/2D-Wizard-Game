@@ -4,8 +4,15 @@ using System.Collections;
 public class PlayerState : MonoBehaviour // class for player's states
 {
     [HideInInspector] public bool isFrozen = false;
-    
-        
+    [SerializeField] LevelTime timeState;
+    [HideInInspector] public bool isDead;
+    void Update()
+    {
+        if (timeState.timeUp)
+        {
+            isDead = true;
+        }
+    }
     public void Freeze(float duration)
     {
         StartCoroutine(FreezeCoroutine(duration));
@@ -20,6 +27,8 @@ public class PlayerState : MonoBehaviour // class for player's states
         isFrozen = false;
     
     }
+
+
 
     
 }

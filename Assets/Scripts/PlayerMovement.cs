@@ -8,30 +8,29 @@ using System.Runtime.CompilerServices;
 public class PlayerMovement : MonoBehaviour
 {
     [SerializeField] float jumpHeight = 5f;
-
- [SerializeField] float speed = 3f;
+    [SerializeField] float speed = 3f;
+    [HideInInspector] public float xAxis;
     public bool isGrounded;
     private bool isJumpPressed;
-    [HideInInspector] public float xAxis;
+    PlayerState state;
     private float bufferTime = 0.1f;
     private float bufferCounter;
-   
     public Rigidbody2D rb;
     public Transform Skeletal;
     
-    PlayerState state;
     
 
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
-                state = GetComponent<PlayerState>();
-
+        state = GetComponent<PlayerState>();
     }
 
     void Update()
     {
-         if (state.isFrozen) return; // Early exit so it doesn't accept inputs if it is frozen
+        if (state.isDead) return; 
+        if (state.isFrozen) return; // Early exit so it doesn't accept inputs if it is frozen
+
         xAxis = Input.GetAxisRaw("Horizontal");              // Inputs
         isGrounded = Mathf.Abs(rb.linearVelocityY) < 0.01f;
         isJumpPressed = Input.GetButtonDown("Jump");
@@ -44,12 +43,21 @@ public class PlayerMovement : MonoBehaviour
 
     void FixedUpdate()
     {
-      if (state.isFrozen)
+        if (state.isDead)
         {
-            rb.linearVelocity = Vector2.zero;
+            rb.linearVelocity = new Vector2(0, rb.linearVelocityY);
+            rb.gravityScale= 2f;
+            return;
+        }
+        
+        
+        if (state.isFrozen)
+        {
+            rb.linearVelocity = Vector2.zero; 
             return;
         }
 
+        
         if (bufferCounter > 0 && isGrounded)
         {
             rb.linearVelocityY = jumpHeight;
