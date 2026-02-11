@@ -16460,7 +16460,7 @@ Transform:
   m_GameObject: {fileID: 454886451}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -5.7084208, y: -1.8875457, z: -10}
+  m_LocalPosition: {x: -5.708172, y: -1.8875457, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -17669,7 +17669,6 @@ GameObject:
   - component: {fileID: 1285055110}
   - component: {fileID: 1285055111}
   - component: {fileID: 1285055112}
-  - component: {fileID: 1285055113}
   m_Layer: 0
   m_Name: LevelControl
   m_TagString: Untagged
@@ -17721,19 +17720,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::UIManager
   playerState: {fileID: 4105362946611754423}
   dieScreen: {fileID: 1262374827}
---- !u!114 &1285055113
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1285055109}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cbc69bc4bce08884b8209cff705d9d43, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::LevelControl
-  state: {fileID: 4105362946611754423}
 --- !u!1 &1299456534
 GameObject:
   m_ObjectHideFlags: 0
@@ -18312,7 +18298,7 @@ Transform:
   m_GameObject: {fileID: 1881783363}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -5.7084208, y: -1.8875457, z: -10}
+  m_LocalPosition: {x: -5.708172, y: -1.8875457, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

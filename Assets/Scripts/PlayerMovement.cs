@@ -65,6 +65,7 @@ public class PlayerMovement : MonoBehaviour
             return;
         }
 
+
         rb.linearVelocity = new Vector2(xAxis * speed, rb.linearVelocityY);
     }
 }
