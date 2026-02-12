@@ -17,6 +17,7 @@ public class PlayerMovement : MonoBehaviour
     private float bufferCounter;
     public Rigidbody2D rb;
     public Transform Skeletal;
+    [HideInInspector] public bool isJumping;
     
     
 
@@ -62,8 +63,13 @@ public class PlayerMovement : MonoBehaviour
         {
             rb.linearVelocityY = jumpHeight;
             bufferCounter = 0;
+            isJumping = true; 
             return;
-        }
+        } else isJumping = false;
+
+        
+        
+       
 
 
         rb.linearVelocity = new Vector2(xAxis * speed, rb.linearVelocityY);

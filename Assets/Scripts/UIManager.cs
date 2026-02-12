@@ -1,9 +1,11 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class UIManager : MonoBehaviour
 {
     [SerializeField] PlayerState playerState;
     [SerializeField] GameObject dieScreen;
+
     
     void Update()
     {
@@ -11,5 +13,8 @@ public class UIManager : MonoBehaviour
         {
             dieScreen.SetActive(true);
         }
+
     }
+
+    
 }
