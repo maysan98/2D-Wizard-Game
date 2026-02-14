@@ -5,7 +5,8 @@ using UnityEngine.SceneManagement;
 public class LevelControl : MonoBehaviour
 {
     [SerializeField] PlayerState state;
-    void Update()
+    
+        void Update()
     {
         if (state.isDead)
         {
@@ -16,6 +17,9 @@ public class LevelControl : MonoBehaviour
     {
         yield return new WaitForSeconds(3);
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-
     }
+
+    
+
+
 }
