@@ -8,6 +8,8 @@ public class PlayerState : MonoBehaviour // class for player's states
     [HideInInspector] public bool isDead;
     void Update()
     {
+        if (isDead) return;
+
         if (timeState.timeUp)
         {
             isDead = true;

@@ -93,7 +93,7 @@ public class PlayerMovement : MonoBehaviour
 
     public bool IsGrounded()
     {
-        float groundCheckDistance = 2f;
+        float groundCheckDistance = 0.5f;
         hit =  Physics2D.Raycast(rayCastOrigin.transform.position, Vector2.down , groundCheckDistance , groundMask);
         return hit.collider != null;
 

@@ -37,8 +37,10 @@ public class PlayerCollision : MonoBehaviour
      
      IEnumerator NextLevel()
     {
-        yield return new WaitForSeconds(3);
+        yield return new WaitForSeconds(5);
+        if(SceneManager.GetActiveScene().name == "Level1" )
         SceneManager.LoadScene(2);
+        else SceneManager.LoadScene(0);
     }
     
     

@@ -12,6 +12,7 @@ public class LevelControl : MonoBehaviour
         {
             StartCoroutine(Respawn());
         }
+        
     }
     IEnumerator Respawn()
     {

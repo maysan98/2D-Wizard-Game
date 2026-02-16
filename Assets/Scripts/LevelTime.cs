@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Xml.Serialization;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -7,6 +8,7 @@ public class LevelTime : MonoBehaviour
 {
 
     [SerializeField] GameObject textObject;
+    [SerializeField] PlayerCollision playerCollision;
     private TextMeshProUGUI timeText;
     public int levelDuration = 30;
     private bool countingSeconds = false;
@@ -25,7 +27,7 @@ public class LevelTime : MonoBehaviour
         if (levelDuration != 0 && countingSeconds == false)
         {
         StartCoroutine(Timer());
-        } else if (levelDuration == 0)
+        } else if (levelDuration == 0 && !playerCollision.hasWon)
         {
             timeUp = true;
             timeText.text = " Time UP! ";
