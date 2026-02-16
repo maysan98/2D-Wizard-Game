@@ -14,10 +14,19 @@ public class PlayerMovement : MonoBehaviour
     private bool isJumpPressed;
     PlayerState state;
     private float bufferTime = 0.1f;
+    private float coyoteTimer;
+    private float coyoteTime = 0.1f;
+
+    
+
     private float bufferCounter;
     public Rigidbody2D rb;
     public Transform Skeletal;
     [HideInInspector] public bool isJumping;
+
+    [SerializeField] LayerMask groundMask;
+    [SerializeField] GameObject rayCastOrigin;
+    RaycastHit2D hit;
     
     
 
@@ -33,13 +42,19 @@ public class PlayerMovement : MonoBehaviour
         if (state.isFrozen) return; // Early exit so it doesn't accept inputs if it is frozen
 
         xAxis = Input.GetAxisRaw("Horizontal");              // Inputs
-        isGrounded = Mathf.Abs(rb.linearVelocityY) < 0.01f;
+        IsGrounded();
         isJumpPressed = Input.GetButtonDown("Jump");
 
         if (isJumpPressed)
             bufferCounter = bufferTime;
         else
-            bufferCounter -= Time.deltaTime;
+           {bufferCounter -= Time.deltaTime;} 
+
+        if (IsGrounded())
+        {
+            coyoteTimer = coyoteTime;
+        } else coyoteTimer -= Time.deltaTime;
+
     }
 
     void FixedUpdate()
@@ -59,10 +74,11 @@ public class PlayerMovement : MonoBehaviour
         }
 
         
-        if (bufferCounter > 0 && isGrounded)
+        if (bufferCounter > 0 && coyoteTimer > 0)
         {
-            rb.linearVelocityY = jumpHeight;
+            rb.linearVelocity = new Vector2(rb.linearVelocityX , jumpHeight);
             bufferCounter = 0;
+            coyoteTimer = 0;
             isJumping = true; 
             return;
         } else isJumping = false;
@@ -73,5 +89,14 @@ public class PlayerMovement : MonoBehaviour
 
 
         rb.linearVelocity = new Vector2(xAxis * speed, rb.linearVelocityY);
+    }
+
+    public bool IsGrounded()
+    {
+        float groundCheckDistance = 2f;
+        hit =  Physics2D.Raycast(rayCastOrigin.transform.position, Vector2.down , groundCheckDistance , groundMask);
+        return hit.collider != null;
+
+        
     }
 }

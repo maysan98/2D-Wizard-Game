@@ -34,7 +34,7 @@ public class AnimationManager : MonoBehaviour
 
         Flip();
 
-        if (!move.isGrounded){
+        if (!move.IsGrounded()){
             if (move.rb.linearVelocityY > 0.01f )
             ChangeAnimationState("Jump");
             else ChangeAnimationState("Idle");

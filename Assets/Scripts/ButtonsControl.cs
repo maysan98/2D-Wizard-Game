@@ -11,6 +11,11 @@ public class ButtonsControl : MonoBehaviour
 
     public void QuitGame()
     {
-        Application.Quit();//only works in the built.
+        Application.Quit();//only works in the build.
+    }
+
+    public void MainMenu()
+    {
+        SceneManager.LoadScene(0);
     }
 }
